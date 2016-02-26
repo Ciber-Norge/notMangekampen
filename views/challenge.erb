@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Title of the document</title>
+  </head>
+  <body>
+    <%= @challenge.html %>
+    <form action ="/challenge/<%= @challenge.uuid %>" method="POST">
+      <label>
+	Answer:
+	<input name="answer" type="text">
+      </label>
+    </form>
+  </body>
+</html>

@@ -1,4 +1,7 @@
 require 'roda'
+require 'logger'
+
+require_relative 'models'
 
 unless KEEN_PROJECT_ID = ENV['KEEN_PROJECT_ID']
 #  raise "You must specify the KEEN_PROJECT_ID env variable"
@@ -12,12 +15,13 @@ unless KEEN_API_URL = ENV['KEEN_API_URL']
 #  raise "You must specify the KEEN_API_URL env variable"
 end
 
-unless DATABASE_URL = ENV['DATABASE_URL']
-#  raise "You must specify the DATABASE_URL env variable"
+unless ENV['DATABASE_URL']
+  raise "You must specify the DATABASE_URL env variable"
 end
 
-
 class NotMangekampen < Roda
+  logger = Logger.new(STDOUT)
+
   use Rack::Session::Cookie, :secret => ENV['SECRET']
 
   plugin :render
@@ -28,22 +32,24 @@ class NotMangekampen < Roda
       render('index')
     end
 
-    r.on 'challenge' do
-      r.get ':id' do | id |
-        challenge = Challenge.find('uuid = ?', id)
-        # logging
-        challenge.html
+    r.is 'challenge/:id' do | id |
+      @challenge = Challenge.find('uuid = ?', id)
+
+      r.get do
+        logger.info("Entering challenge #{@challenge.uuid}")
+        render('challenge')
       end
 
-      r.post ':id' do | id |
-        challenge = Challenge.find('uuid = ?', id)
-        # logging
-        if challenge.answer == r.params[:answer]
-          # logg
-          redirect("/challenge/#{challenge.next}")
+      r.post do | id, answer |
+        answer = r['answer']
+        logger.info("Trying to answer #{@challenge.uuid} with #{answer}")
+        # inform keen about the uuid and what the answer was
+        if @challenge.answer == answer
+          logger.info("It was correct")
+          r.redirect("/challenge/#{@challenge.next}")
         else
-          # logg
-          redirect("/challenge/#{id}")
+          logger.info("It was wrong")
+          r.redirect("/challenge/#{@challenge.uuid}")
         end
       end
     end
