@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'roda'
 require 'logger'
 
@@ -26,6 +27,33 @@ class NotMangekampen < Roda
 
   plugin :render
   plugin :static, ['/images']
+  plugin :not_found do
+    ["Suffer, like G did!",
+     "Hq to all squads, there are reports of youths skating on 99th street. All unints nearby are ordered to investigate. I repeat, all units nearby are ordered to investigate.",
+     "Oh, hi. So, how are you holding up? BECAUSE I'M A POTATO!",
+     "The right man in the wrong place can make all the difference in the world.",
+     "Why, that's the second biggest monkey head I've ever seen!",
+     "A man chooses; a slave obeys.",
+     "It's time to kick ass and chew bubble gum, and I'm all out of gum.",
+     "Wait, that's not how it happened.",
+     "Objection!",
+     "Look behind you, a Three-Headed Monkey!",
+     "Wakka wakka wakka!",
+     "I've covered wars, you know.",
+     "EA Sports! It's in the game.",
+     "Job's done.",
+     "Good thinking, little buddy.",
+     "Every puzzle has an answer.",
+     "Hey! Listen!",
+     "Frankly, I'm ashamed.",
+     "It is pitch black. You are likely to be eaten by a grue.",
+     "Fus-ro-dah!",
+     "Say, 'fuzzy pickles'.",
+     "It's super effective!",
+     "Jason! Jaaaaaaaaason!",
+     "The Kid just rages for a while.",
+     "First blood"].sample
+  end
 
   route do |r|
     r.root do
