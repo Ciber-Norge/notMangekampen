@@ -15,9 +15,9 @@ Sequel.migration do
 
     self[:challenges].insert(
                         :uuid       => "start",
-                        :html       => "<p>Hva slags tur skal vi på?</p>",
-                        :answer     => "mangekampturen",
-                        :next       => "",
+                        :html       => "<p>Hvem betaler turen vår?</p>",
+                        :answer     => "ciber norge",
+                        :next       => "insert manually",
                         :created_at => timestamp,
                         :updated_at => timestamp
       )
