@@ -44,9 +44,10 @@ class NotMangekampen < Roda
         answer = r['answer']
         logger.info("Trying to answer #{@challenge.uuid} with #{answer}")
         # inform keen about the uuid and what the answer was
-        if @challenge.answer == answer
+        if @challenge.answer.casecmp(answer) == 0
           logger.info("It was correct")
-          r.redirect("/challenge/#{@challenge.next}")
+          next_challenge = Challenge.find('id = ?', @challenge.next)
+          r.redirect("/challenge/#{next_challenge.uuid}")
         else
           logger.info("It was wrong")
           r.redirect("/challenge/#{@challenge.uuid}")
