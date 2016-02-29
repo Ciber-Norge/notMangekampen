@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 require 'roda'
 require 'logger'
+require 'keen'
 
 require_relative 'models'
 
 unless KEEN_PROJECT_ID = ENV['KEEN_PROJECT_ID']
-#  raise "You must specify the KEEN_PROJECT_ID env variable"
+  raise "You must specify the KEEN_PROJECT_ID env variable"
 end
 
 unless KEEN_WRITE_KEY = ENV['KEEN_WRITE_KEY']
-#  raise "You must specify the KEEN_WRITE_KEY env variable"
+  raise "You must specify the KEEN_WRITE_KEY env variable"
 end
 
 unless KEEN_API_URL = ENV['KEEN_API_URL']
-#  raise "You must specify the KEEN_API_URL env variable"
+  raise "You must specify the KEEN_API_URL env variable"
 end
 
 unless ENV['DATABASE_URL']
@@ -77,7 +78,7 @@ class NotMangekampen < Roda
       r.post do | id, answer |
         answer = r['answer']
         logger.info("Trying to answer #{@challenge.uuid} with #{answer}")
-        # inform keen about the uuid and what the answer was
+        Keen.publish("answer", {'challenge' => @challenge.uuid, 'answer' => answer})
         if @challenge.answer.casecmp(answer) == 0
           logger.info("It was correct")
           next_challenge = Challenge.find('id = ?', @challenge.next)
