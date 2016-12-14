@@ -22,7 +22,7 @@ unless ENV['DATABASE_URL']
   raise "You must specify the DATABASE_URL env variable"
 end
 
-FUN_QUOTES = YAML.load('quotes.yaml')
+FUN_QUOTES = YAML.load_file('quotes.yaml')
 
 class NotMangekampen < Roda
   logger = Logger.new(STDOUT)
