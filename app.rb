@@ -51,6 +51,7 @@ class NotMangekampen < Roda
     end
 
     r.is 'challenge/:id' do | id |
+      redirect('/challenge/start') if id.nil?
       @challenge = Challenge.find('uuid = ?', id)
 
       r.get do
