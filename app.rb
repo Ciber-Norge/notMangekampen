@@ -44,6 +44,12 @@ class NotMangekampen < Roda
       render('index')
     end
 
+    r.is 'challenge' do
+      r.get do
+        r.redirect('/challenge/start')
+      end
+    end
+
     r.is 'challenge/:id' do | id |
       @challenge = Challenge.find('uuid = ?', id)
 
